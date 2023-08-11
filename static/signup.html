@@ -100,16 +100,12 @@
 
 
                     if (response.status === 201) {
-                        const data = await response.json();
-                        const token = data.token;
-                        localStorage.setItem("token", token);
                         window.location.href = "/dashboard";
-                        console.log("Token stored in localStorage:", token);
                     } else {
                         console.error("Signup failed:", response.message);
                     }
                 } catch (error) {
-                    console.error("An error occurred:", error);
+                    console.error("Error: ", error);
                 }
             });
         });

@@ -1,4 +1,4 @@
-const pool = require("../db");
+const pool = require("../database/db");
 
 exports.create_todo = async (req, res) => {
   try {

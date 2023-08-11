@@ -1,4 +1,4 @@
-const pool = require("../db");
+const pool = require("../database/db");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const jwt = require("jsonwebtoken");
@@ -41,9 +41,9 @@ exports.post_login = async (req, res, next) => {
       );
       res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 });
       res.status(200).json({
-        token: token
+        message: "Logged in Successfully",
+        token: token,
       });
-      console.log('Token Stored in LocalStorage');
     });
   } catch (err) {
     res.status(500).json({

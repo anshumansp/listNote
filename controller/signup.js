@@ -1,4 +1,4 @@
-const pool = require("../db");
+const pool = require("../database/db");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const jwt = require("jsonwebtoken");
@@ -49,17 +49,16 @@ exports.post_signup = async (req, res, next) => {
         }
       );
 
+      res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 });
       res.status(201).json({
-        message: "Form Submitted Successfully, Login Now.",
-        url: "http://localhost:5000/login",
-        token: token
+        message: "Signed Up Successfully",
+        token: token,
       });
-      console.log(token)
     });
   } catch (err) {
     res.status(500).json({
       error: err.message,
     });
-    console.log(err.message)
+    console.log(err.message);
   }
 };
