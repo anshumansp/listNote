@@ -31,6 +31,12 @@ app.post("/signup", signupController.post_signup);
 app.get("/login", loginController.get_login);
 app.post("/login", loginController.post_login);
 
+// Handling Logout Methods
+app.get('/logout', (req, res) => {
+  res.clearCookie('jwt'); 
+  res.redirect('/login');
+});
+
 // CRUD Operations with Todo list
 app.post("/todos", todoController.create_todo);
 app.get("/todos", todoController.get_all_todos);

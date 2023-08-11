@@ -49,7 +49,10 @@ exports.post_signup = async (req, res, next) => {
         }
       );
 
-      res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 });
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        expiresIn: new Date(Date.now() + 3600000),
+      });
       res.status(201).json({
         message: "Signed Up Successfully",
         token: token,
