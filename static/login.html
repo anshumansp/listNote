@@ -95,9 +95,8 @@
                     if (response.status === 200) {
                         const data = await response.json();
                         const token = data.token;
-                        localStorage.setItem("authToken", token);
-                        window.location.href = "/dashboard";
-                        console.log("Token stored in localStorage:", token);
+                        localStorage.setItem("token", token);
+                        window.location.href = "/dashboard"
                     } else {
                         console.error("Login failed:", response.message);
                     }
@@ -106,6 +105,7 @@
                 }
             });
         });
+
     </script>
 </body>
 

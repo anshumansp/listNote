@@ -32,17 +32,17 @@ exports.post_login = async (req, res, next) => {
 
       const token = jwt.sign(
         {
-          email: user.email,
+          user: user.email,
         },
         "thisisanshumansecretkey",
         {
           expiresIn: "1h",
         }
       );
-      console.log(token);
       res.status(200).json({
         token: token
       });
+      console.log('Token Stored in LocalStorage');
     });
   } catch (err) {
     res.status(500).json({

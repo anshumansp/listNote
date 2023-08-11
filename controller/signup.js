@@ -54,12 +54,12 @@ exports.post_signup = async (req, res, next) => {
         url: "http://localhost:5000/login",
         token: token
       });
-
-      console.log(newUser.rows);
+      console.log(token)
     });
   } catch (err) {
     res.status(500).json({
       error: err.message,
     });
+    console.log(err.message)
   }
 };
