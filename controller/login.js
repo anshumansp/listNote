@@ -39,7 +39,7 @@ exports.post_login = async (req, res, next) => {
           expiresIn: "1h",
         }
       );
-
+      console.log(token);
       res.status(200).json({
         message: "Logged In Successfully",
         token: token,

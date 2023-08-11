@@ -74,6 +74,39 @@
             </div>
         </form>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector("form");
+            form.addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                const email = document.getElementById("name").value;
+                const password = document.getElementById("password").value;
+
+                try {
+                    const response = await fetch("/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ email, password }),
+                    });
+
+                    if (response.status === 200) {
+                        const data = await response.json();
+                        const token = data.token;
+                        localStorage.setItem("authToken", token);
+                        window.location.href = "/dashboard";
+                        console.log("Token stored in localStorage:", token);
+                    } else {
+                        console.error("Login failed:", response.message);
+                    }
+                } catch (error) {
+                    console.error("An error occurred:", error);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

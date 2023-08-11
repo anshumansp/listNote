@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Rendering our Dashboard
-app.get("/dashboard", (req, res, next) => {
+app.get("/dashboard", authorization, (req, res, next) => {
   res.sendFile(__dirname + "/static/todo.html");
 });
 
