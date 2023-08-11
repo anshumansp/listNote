@@ -39,6 +39,7 @@ exports.post_login = async (req, res, next) => {
           expiresIn: "1h",
         }
       );
+      res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 });
       res.status(200).json({
         token: token
       });

@@ -1,21 +1,17 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
+  const token = req.cookies.jwt;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication failed' });
+  }
+
   try {
-    const jwtToken = req.headers.authorization.split(" ")[1];
-    if(jwtToken) {
-      const payload = jwt.verify(jwtToken, "thisisanshumansecretkey");
-      req.user = payload;
-      next();
-    } else {
-      return res.status(403).json({
-        message: "Authentication Failed"
-      })
-    }
+    const decodedToken = jwt.verify(token, 'thisisanshumansecretkey'); 
+    req.user = decodedToken.user; 
+    next();
   } catch (error) {
-    console.log(error.message)
-    return res.status(500).json({
-      message: "Authentication Failed",
-    });
+    return res.status(401).json({ message: 'Authentication failed' });
   }
 };

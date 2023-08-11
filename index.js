@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 const authorization = require("./authorize");
 const todoController = require("./controller/todos");
 const signupController = require("./controller/signup");
@@ -11,6 +12,7 @@ const loginController = require("./controller/login");
 
 // Adding Required Middlewares
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use("/static", express.static("static", { extensions: ["js"] }));
 app.use(bodyParser.urlencoded({ extended: false }));
