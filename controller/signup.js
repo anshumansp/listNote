@@ -1,6 +1,7 @@
 const pool = require("../db");
 const bcrypt = require("bcrypt");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 
 exports.get_signup = (req, res, next) => {
   const filePath = path.join(__dirname, "../static/signup.html");
@@ -38,9 +39,20 @@ exports.post_signup = async (req, res, next) => {
         hash,
       ]);
 
+      const token = jwt.sign(
+        {
+          email: email,
+        },
+        "thisisanshumansecretkey",
+        {
+          expiresIn: "1h",
+        }
+      );
+
       res.status(201).json({
         message: "Form Submitted Successfully, Login Now.",
         url: "http://localhost:5000/login",
+        token: token
       });
 
       console.log(newUser.rows);
