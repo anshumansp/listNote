@@ -3,8 +3,9 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
+const path = require("path");
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const authorization = require("./authorization/authorize");
 const todoController = require("./controller/todos");
 const signupController = require("./controller/signup");
@@ -25,6 +26,10 @@ app.get("/dashboard", authorization, (req, res, next) => {
     "no-store, no-cache, must-revalidate, max-age=0"
   );
   res.sendFile(__dirname + "/static/todo.html");
+});
+
+app.get("/script", (req, res) => {
+  res.sendFile(path.join(__dirname, "static", "script.js"));
 });
 
 // Handling Signup Methods
