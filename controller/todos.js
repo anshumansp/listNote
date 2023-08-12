@@ -9,9 +9,8 @@ exports.create_todo = async (req, res) => {
     );
     res.status(200).json({
       message: "Successfully Saved Todo",
-      savedTodo: newTodo.rows,
+      id: newTodo.rows[0].id,
     });
-    console.log(newTodo.rows);
   } catch (err) {
     console.log(err.message);
   }
@@ -79,6 +78,8 @@ exports.update_todo = async (req, res) => {
 exports.delete_todo = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(req.params);
+    console.log(id);
     await pool.query("DELETE FROM todo WHERE id = $1", [id]);
     res.status(200).json({
       message: "Todo Deleted Successfully",

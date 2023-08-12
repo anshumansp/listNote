@@ -185,12 +185,7 @@ function removeIt(button) {
 
 
   // Function to add the List item and removing it
-  function addIt() {
-    // Creating the New List Item
-    var newItem = document.createElement("li");
-    newItem.textContent = userInput;
-    newItem.className = "list-group-item pt-2 pb-2 mt-0 fs-5";
-
+          async function addIt() {
     // Saving the text into Database
 
     const submitToDatabase = async()=> {
@@ -199,45 +194,24 @@ function removeIt(button) {
           description : userInput 
         }
     
-        const response = await fetch("http://localhost:5000/todos", {
+        await fetch("http://localhost:5000/todos", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify(body)
-        });
-
-        if (response.ok) {
-          console.log("Todo successfully saved to the database");
-        } else {
-          console.log("Failed to save todo to the database");
-        }
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
-
-    submitToDatabase();
-
-
-    // Adding the list Item in the parent tag
-    var list = document.querySelector(".list-group");
-    list.appendChild(newItem);
-
-    // Checking for List Items and showing msg and removing the message if any item is added
-    if (list.children.length === 0) {
-      let newEmptyMsg = document.createElement("h3");
-      newEmptyMsg.textContent = "Nothing is Here, Please Add a List Item!!";
-      newEmptyMsg.className = "form-control";
-      list.appendChild(newEmptyMsg);
-    } else {
-      let newEmptyMsg = list.querySelector("h3");
-      if (newEmptyMsg && newEmptyMsg.textContent === "Nothing is Here, Please Add a List Item!!") {
-        newEmptyMsg.remove();
-      }
-    }
-
-    // Adding the Remove and Edit buttons to Li Tag
+        }).then(response => response.json())
+          .then(data => {
+            const newItemId = data.id;
+            // Creating the New List Item
+            var newItem = document.createElement("li");
+            newItem.textContent = userInput;
+            newItem.setAttribute("id", `${newItemId}`);
+            newItem.className = "list-group-item pt-2 pb-2 mt-0 fs-5";
+            // Adding the list Item in the parent tag
+            var list = document.querySelector(".list-group");
+            list.appendChild(newItem);
+            // Adding the Remove and Edit buttons to Li Tag
     var editBtn = document.createElement("button");
     var removeBtn = document.createElement("button");
     editBtn.textContent = "Edit";
@@ -259,6 +233,30 @@ function removeIt(button) {
     editBtn.addEventListener("click", function () {
       editIt(editBtn);
     });
+          })
+                .catch(error => {
+                  console.error("Error:", error);
+                });
+            } catch (err) {
+              console.log(err.message)
+            }
+          }
+
+          submitToDatabase();
+
+          // Checking for List Items and showing msg and removing the message if any item is added
+          var list = document.querySelector(".list-group");
+          if (list.children.length === 0) {
+            let newEmptyMsg = document.createElement("h3");
+            newEmptyMsg.textContent = "Nothing is Here, Please Add a List Item!!";
+            newEmptyMsg.className = "form-control";
+            list.appendChild(newEmptyMsg);
+          } else {
+            let newEmptyMsg = list.querySelector("h3");
+            if (newEmptyMsg && newEmptyMsg.textContent === "Nothing is Here, Please Add a List Item!!") {
+              newEmptyMsg.remove();
+            }
+          }
   }
 
 
