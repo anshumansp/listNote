@@ -72,14 +72,14 @@
         </nav>
     </header>
 
-    <div class="container col-6 pr-2 pl-2 mt-4">
+    <div id="todos" class="container col-6 pr-2 pl-2 mt-4">
         <div class="container mt-3 pl-0 pr-0 text-light">
             <form>
                 <div class="form-group mb-3">
                     <label for="exampleInputEmail1">Title</label>
                     <input type="text" class="form-control mt-2" id="title" aria-describedby="emailHelp">
                 </div>
-                <div class="form-group mb-3" id="">
+                <div class="form-group mb-4" id="">
                     <label for="exampleFormControlTextarea1">Description</label>
                     <textarea class="form-control mt-2" id="description" rows="3"></textarea>
                 </div>
@@ -87,21 +87,38 @@
                 <button type="submit" id="removeBtn" class="btn btn-outline-light mt-2 me-2">Remove</button>
             </form>
         </div>
-
-        <div class="container text-light mt-4 pt-2 pb-2 bg-secondary border border-dark rounded pr-0 pl-3" id="todos">
-        </div>
     </div>
     <script>
 
-        submitBtn.addEventListener("click", (e) => {
-            console.log("it is working bro")
-            let theTitle = title.value;
-            let theDescription = description.value
-            localStorage.setItem("todos", JSON.stringify([theTitle, theDescription]))
-            todos.innerHTML = `<h1>${theTitle}</h1>
-            <p>${theDescription}</p>`
-            title.value = ""
-            description.value = ""
+        var todos = document.getElementById("todos");
+        var noteTitle = document.getElementById("title");
+        var noteDescription = document.getElementById("description");
+
+        submitBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            let title = noteTitle.value;
+            let description = noteDescription.value
+            const body = {
+                title: title,
+                description: description
+            }
+            await fetch("http://localhost:5000/note/",{
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            }).then((response)=> response.json())
+            .then((data)=> {
+                console.log(data.note)
+                const { id, description, title } = data.note;
+                const newNote = document.createElement("div");
+                newNote.innerHTML = `<h3>${title}</h1><p>${description}</p>`;
+                newNote.className = "container text-light mt-4 mb-4 pt-2 pb-2 bg-secondary border border-dark rounded pr-0 pl-3";
+                todos.appendChild(newNote);
+            });
+            noteTitle.value = ""
+            noteDescription.value = ""
         })
 
         removeBtn.addEventListener("click", (e) => {
@@ -111,20 +128,28 @@
             todos.remove()
         })
 
-        function loadListFromLocalStorage() {
-            let mytodos = localStorage.getItem("todos");
-            if (mytodos != null) {
-                let mycontent = JSON.parse(mytodos)
-                let title = mycontent[0]
-                let description = mycontent[1]
-                todos.innerHTML = `<h1>${title}</h1><p>${description}</p>`
-            }
-            else {
-                todos.remove()
+        async function fetchAndDisplayNotes() {
+            try {
+                let response = await fetch("http://localhost:5000/note/");
+                let notes = await response.json();
+                let myNotes = notes.yourNotes;
+                if(myNotes.length === 0) {
+                    throw new Error("No Note Found");
+                }
+                for (note of myNotes) {
+                    const { id, description, title } = note;
+                    const newNote = document.createElement("div");
+                    newNote.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
+                    newNote.className = "container text-light mt-4 mb-4 pt-2 pb-2 bg-secondary border border-dark rounded pr-0 pl-3";
+                    todos.appendChild(newNote);
+                }
+
+            } catch (err) {
+                console.log(err)
             }
         }
 
-        window.addEventListener("DOMContentLoaded", loadListFromLocalStorage);
+        window.onload = fetchAndDisplayNotes;
 
     </script>
 </body>
