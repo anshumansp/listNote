@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const authorization = require("./authorization/authorize");
 const todoController = require("./controller/todos");
+const notesController = require("./controller/notes");
 const signupController = require("./controller/signup");
 const loginController = require("./controller/login");
 
@@ -32,6 +33,14 @@ app.get("/script", (req, res) => {
   res.sendFile(path.join(__dirname, "static", "script.js"));
 });
 
+app.get("/notes", authorization, (req, res)=> {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, max-age=0"
+  );
+  res.sendFile(__dirname + "/static/notes.html");
+})
+
 // Handling Signup Methods
 app.get("/signup", signupController.get_signup);
 app.post("/signup", signupController.post_signup);
@@ -52,6 +61,13 @@ app.get("/todos", todoController.get_all_todos);
 app.get("/todos/:id", todoController.get_one_todo);
 app.put('/todos/:id', todoController.update_todo);
 app.delete('/todos/:id', todoController.delete_todo);
+
+// CRUD Operations with Notes
+app.post("/note", notesController.create_note);
+app.get("/note", notesController.get_all_notes);
+app.get("/note/:id", notesController.get_one_note);
+app.put('/note/:id', notesController.update_note);
+app.delete('/note/:id', notesController.delete_note);
 
 // Listening the Server
 app.listen(port, (req, res, next)=> {

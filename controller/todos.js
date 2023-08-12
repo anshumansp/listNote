@@ -75,11 +75,10 @@ exports.update_todo = async (req, res) => {
     });
   }
 };
+
 exports.delete_todo = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.params);
-    console.log(id);
     await pool.query("DELETE FROM todo WHERE id = $1", [id]);
     res.status(200).json({
       message: "Todo Deleted Successfully",
