@@ -197,16 +197,13 @@
         async function editNote(noteId) {
 
                 const id = noteId;
-                const editDescriptionInput = document.getElementById("editDescription");
                 const noteContainer = document.getElementById(id);
                 const noteContent = noteContainer.querySelector(".note-content");
-                const noteText = noteContent.querySelector("p").textContent; // Get the note description text
+                const noteText = noteContent.querySelector("p").textContent;
+                const editDescriptionInput = document.getElementById("editDescription");
 
                 // Set the current description text in the modal textarea
                 editDescriptionInput.value = noteText;
-
-                // Set the note ID as a data attribute in the modal for reference
-                document.getElementById("editModal").setAttribute("data-note-id", id);
 
                 // Show the modal
                 const editModal = new bootstrap.Modal(document.getElementById("editModal"));
@@ -215,15 +212,16 @@
                 // Handle Save Changes button in the modal
                 document.getElementById("saveEditBtn").addEventListener("click", async function () {
                     const editedDescription = editDescriptionInput.value;
-                    const editedNoteId = document.getElementById("editModal").getAttribute("data-note-id");
 
-                     // Update the note content with the edited description
+                    // Update the note content with the edited description
                     const newNoteContent = noteContent.querySelector("p");
                     newNoteContent.textContent = editedDescription;
 
                     // Close the modal
                     editModal.hide();
-                    await fetch(`http://localhost:5000/note/${editedNoteId}`, {
+
+                    // Updating the Description in Database
+                    await fetch(`http://localhost:5000/note/${id}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
@@ -274,6 +272,7 @@
         });
         
         window.onload = fetchAndDisplayNotes;
+
     </script>
 </body>
 
