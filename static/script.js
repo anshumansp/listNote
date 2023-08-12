@@ -41,9 +41,6 @@ function editIt(button) {
   var value = liTag.firstChild.textContent;
   liTag.textContent = "";
 
-  // Declare the newValue variable in the outer scope
-  var newValue;
-
   // Create a new input element
   var input = document.createElement("input");
   input.type = "text";

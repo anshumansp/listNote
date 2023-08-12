@@ -5,8 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<!-- Include Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Include Bootstrap JavaScript (without integrity attribute) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Your existing code follows -->
+<!-- ... -->
+
     <style>
         .navbar-text {
             flex: 1;
@@ -84,18 +91,42 @@
                     <textarea class="form-control mt-2" id="description" rows="3"></textarea>
                 </div>
                 <button type="submit" id="submitBtn" class="btn btn-outline-light mt-2 me-2">Submit</button>
-                <button type="submit" id="removeBtn" class="btn btn-outline-light mt-2 me-2">Remove</button>
             </form>
         </div>
+        <div id="noteContainer" class="container mt-4">
+            <!-- Notes will be added here -->
+        </div>
     </div>
+    
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editDescription">Edit Description</label>
+                        <textarea class="form-control" id="editDescription" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" id="saveEditBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
 
         var todos = document.getElementById("todos");
         var noteTitle = document.getElementById("title");
         var noteDescription = document.getElementById("description");
+        var submitBtn = document.getElementById("submitBtn");
 
-        submitBtn.addEventListener("click", async (e) => {
-            e.preventDefault();
+        async function submitNote() {
             let title = noteTitle.value;
             let description = noteDescription.value
             const body = {
@@ -110,23 +141,115 @@
                 body: JSON.stringify(body),
             }).then((response)=> response.json())
             .then((data)=> {
-                console.log(data.note)
-                const { id, description, title } = data.note;
-                const newNote = document.createElement("div");
-                newNote.innerHTML = `<h3>${title}</h1><p>${description}</p>`;
-                newNote.className = "container text-light mt-4 mb-4 pt-2 pb-2 bg-secondary border border-dark rounded pr-0 pl-3";
-                todos.appendChild(newNote);
+                addNote(data.note)
             });
             noteTitle.value = ""
             noteDescription.value = ""
-        })
+        }
 
-        removeBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            localStorage.removeItem("todos")
-            todos.innerHTML = ""
-            todos.remove()
-        })
+        async function addNote(note) {
+                const { id, description, title } = note;
+                const newNote = document.createElement("div");
+                newNote.className = "note-container bg-secondary d-flex justify-content-between align-items-center border border-dark rounded p-3 mb-3";
+                newNote.setAttribute("id", id);
+
+                const noteContent = document.createElement("div");
+                noteContent.innerHTML = `<h3>${title}</h3><p>${description}<p>`;
+                noteContent.className = "note-content text-light";
+
+                const buttonContainer = document.createElement("div");
+                buttonContainer.className = "button-container d-flex justify-content-end align-items-center";
+
+                var editBtn = document.createElement("button");
+                var removeBtn = document.createElement("button");
+                editBtn.textContent = "Edit";
+                removeBtn.textContent = "Remove";
+                editBtn.className = "btn btn-outline-dark btn-sm me-2";
+                editBtn.setAttribute("id", "editBtn");
+                removeBtn.className = "btn btn-sm btn-outline-dark";
+                removeBtn.setAttribute("id", "removeBtn");
+
+                // Append buttons to the button container
+                buttonContainer.appendChild(editBtn);
+                buttonContainer.appendChild(removeBtn);
+
+                // Append note content and button container to the newNote
+                newNote.appendChild(noteContent);
+                newNote.appendChild(buttonContainer);
+
+                // Append the newNote to the noteContainer
+                const noteContainer = document.getElementById("noteContainer");
+                noteContainer.appendChild(newNote);
+
+                // Adding Click Eventlistener on Edit Button
+                editBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    editNote(id);
+            })
+
+            // Adding Click Eventlistener on Remove Button
+            removeBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                removeNote(id);
+            })
+        }
+
+        async function editNote(noteId) {
+
+                const id = noteId;
+                const editDescriptionInput = document.getElementById("editDescription");
+                const noteContainer = document.getElementById(id);
+                const noteContent = noteContainer.querySelector(".note-content");
+                const noteText = noteContent.querySelector("p").textContent; // Get the note description text
+
+                // Set the current description text in the modal textarea
+                editDescriptionInput.value = noteText;
+
+                // Set the note ID as a data attribute in the modal for reference
+                document.getElementById("editModal").setAttribute("data-note-id", id);
+
+                // Show the modal
+                const editModal = new bootstrap.Modal(document.getElementById("editModal"));
+                editModal.show();
+
+                // Handle Save Changes button in the modal
+                document.getElementById("saveEditBtn").addEventListener("click", async function () {
+                    const editedDescription = editDescriptionInput.value;
+                    const editedNoteId = document.getElementById("editModal").getAttribute("data-note-id");
+
+                     // Update the note content with the edited description
+                    const newNoteContent = noteContent.querySelector("p");
+                    newNoteContent.textContent = editedDescription;
+
+                    // Close the modal
+                    editModal.hide();
+                    await fetch(`http://localhost:5000/note/${editedNoteId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ description: editedDescription })
+                    }).then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                    });
+                });
+        }
+
+        async function removeNote(noteId) {
+            const id = noteId;
+            const noteElement = document.getElementById(id);
+            noteElement.remove();
+            await fetch(`http://localhost:5000/note/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            });
+        }
 
         async function fetchAndDisplayNotes() {
             try {
@@ -137,11 +260,7 @@
                     throw new Error("No Note Found");
                 }
                 for (note of myNotes) {
-                    const { id, description, title } = note;
-                    const newNote = document.createElement("div");
-                    newNote.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
-                    newNote.className = "container text-light mt-4 mb-4 pt-2 pb-2 bg-secondary border border-dark rounded pr-0 pl-3";
-                    todos.appendChild(newNote);
+                    addNote(note);
                 }
 
             } catch (err) {
@@ -149,8 +268,12 @@
             }
         }
 
+        submitBtn.addEventListener("click", function (e) {
+            e.preventDefault()
+            submitNote();
+        });
+        
         window.onload = fetchAndDisplayNotes;
-
     </script>
 </body>
 
