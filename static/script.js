@@ -137,7 +137,7 @@ async function addIt() {
           var newItem = document.createElement("li");
           newItem.textContent = userInput;
           newItem.setAttribute("id", `${newItemId}`);
-          newItem.className = "list-group-item pt-2 pb-2 mt-0 fs-5";
+          newItem.className = "list-group-item bg-dark bg-opacity-50 text-white pt-2 pb-2 mt-0 fs-5";
           // Adding the list Item in the parent tag
           var list = document.querySelector(".list-group");
           list.appendChild(newItem);
@@ -146,8 +146,8 @@ async function addIt() {
           var removeBtn = document.createElement("button");
           editBtn.textContent = "Edit";
           removeBtn.textContent = "Remove";
-          editBtn.className = "btn btn-outline-dark btn-sm float-end me-2";
-          removeBtn.className = "btn btn-sm btn-outline-dark float-end";
+          editBtn.className = "btn btn-outline-light btn-sm float-end me-2";
+          removeBtn.className = "btn btn-sm btn-outline-light float-end";
           newItem.appendChild(removeBtn);
           newItem.appendChild(editBtn);
 
