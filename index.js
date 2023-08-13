@@ -11,6 +11,7 @@ const todoController = require("./controller/todos");
 const notesController = require("./controller/notes");
 const signupController = require("./controller/signup");
 const loginController = require("./controller/login");
+const homeController = require("./controller/home");
 
 // Adding Required Middlewares
 app.use(cors());
@@ -20,42 +21,16 @@ app.use("/static", express.static("static", { extensions: ["js"] }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Rendering our Dashboard
-app.get("/home", authorization, (req, res) => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0"
-  );
-  res.sendFile(__dirname + "/static/home.html");
-});
+// Rendering our Home
+app.get("/home", authorization, homeController.get_homepage);
+app.get("/image", homeController.get_image);
 
-app.get("/image", authorization, (req, res) => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0"
-  );
-  res.sendFile(__dirname + "/static/a.jpg");
-});
+// Rendering todo page
+app.get("/dashboard", authorization, todoController.get_todo_homepage);
+app.get("/script", todoController.get_todo_js);
 
-app.get("/dashboard", authorization, (req, res, next) => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0"
-  );
-  res.sendFile(__dirname + "/static/todo.html");
-});
-
-app.get("/script", (req, res) => {
-  res.sendFile(path.join(__dirname, "static", "script.js"));
-});
-
-app.get("/notes", authorization, (req, res)=> {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0"
-  );
-  res.sendFile(__dirname + "/static/notes.html");
-})
+// Rendering Notes Homepage
+app.get("/notes", authorization, notesController.get_notes_homepage);
 
 // Handling Signup Methods
 app.get("/signup", signupController.get_signup);
@@ -64,12 +39,7 @@ app.post("/signup", signupController.post_signup);
 // Handling Login Methods
 app.get("/login", loginController.get_login);
 app.post("/login", loginController.post_login);
-
-// Handling Logout Methods
-app.get('/logout', (req, res) => {
-  res.clearCookie('jwt'); 
-  res.redirect('/login');
-});
+app.get("/logout", loginController.do_logout);
 
 // CRUD Operations with Todo list
 app.post("/todos", todoController.create_todo);

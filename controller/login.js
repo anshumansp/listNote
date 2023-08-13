@@ -8,6 +8,11 @@ exports.get_login = (req, res, next) => {
   res.sendFile(filePath);
 };
 
+exports.do_logout = (req, res) => {
+  res.clearCookie("jwt");
+  res.redirect("/login");
+};
+
 exports.post_login = async (req, res, next) => {
   const { email, password } = req.body;
 

@@ -1,4 +1,17 @@
 const pool = require("../database/db");
+const path = require("path");
+
+exports.get_todo_homepage = (req, res, next) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, max-age=0"
+  );
+  res.sendFile(path.join(__dirname, "../static/todo.html"));
+};
+
+exports.get_todo_js = (req, res) => {
+  res.sendFile(path.join(__dirname, "../static/script.js"));
+};
 
 exports.create_todo = async (req, res) => {
   try {

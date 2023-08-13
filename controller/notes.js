@@ -1,4 +1,13 @@
 const pool = require("../database/db");
+const path = require("path");
+
+exports.get_notes_homepage = (req, res) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, max-age=0"
+  );
+  res.sendFile(path.join(__dirname, "../static/notes.html"));
+};
 
 exports.create_note = async (req, res) => {
   try {
