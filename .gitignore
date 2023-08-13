@@ -4,3 +4,4 @@ node_modules/
 ./node_modules
 Commands-PSQL.txt
 package-lock.json
+.env
