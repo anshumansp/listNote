@@ -1,9 +1,9 @@
 // Importing all Important Modules
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
-const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const authorization = require("./authorization/authorize");
