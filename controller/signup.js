@@ -48,7 +48,7 @@ exports.post_signup = async (req, res, next) => {
         {
           email: email,
         },
-        "thisisanshumansecretkey",
+        process.env.SECRET_KEY,
         {
           expiresIn: "1h",
         }

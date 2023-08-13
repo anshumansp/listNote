@@ -44,7 +44,7 @@ exports.post_login = async (req, res, next) => {
         {
           user: user.email,
         },
-        "thisisanshumansecretkey",
+        process.env.SECRET_KEY,
         {
           expiresIn: "1h",
         }
