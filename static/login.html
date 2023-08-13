@@ -48,14 +48,19 @@
         }
 
         span:hover {
-            color: rgb(40, 37, 37);
+            color: rgb(165, 162, 167);
+        }
+
+        body{
+            background: url("/image3") center/cover no-repeat;
+            height: 100vh;
         }
     </style>
 </head>
 
-<body id="body" class="bg-dark d-flex justify-content-center align-items-center vh-100">
+<body id="body" class="d-flex justify-content-center align-items-center vh-100">
 
-    <div class="container bg-secondary p-4 rounded custom-box">
+    <div class="container bg-dark bg-opacity-75 p-4 rounded custom-box">
         <h2 class="text-center mt-2 text-light login-text">Login</h2>
         <form action="/login" method="POST">
             <div class="mt-2 mb-4">
@@ -69,7 +74,7 @@
                     placeholder="Enter your password" required>
             </div>
             <div class="btn-box">
-                <button type="submit" class="btn btn-dark btn-block submit-button">Submit</button>
+                <button type="submit" class="btn btn-secondary bg-opacity-25 btn-block submit-button">Submit</button>
                 <a href="/signup"> Not a User? <span>Signup</span> </a>
             </div>
         </form>

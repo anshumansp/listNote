@@ -8,6 +8,11 @@ exports.get_signup = (req, res, next) => {
   res.sendFile(filePath);
 };
 
+exports.get_image = (req, res, next)=> {
+  const filePath = path.join(__dirname, "../static/d.jpg");
+  res.sendFile(filePath);
+}
+
 exports.post_signup = async (req, res, next) => {
   const { name, username, email, password } = req.body;
 

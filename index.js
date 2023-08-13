@@ -34,12 +34,14 @@ app.get("/notes", authorization, notesController.get_notes_homepage);
 
 // Handling Signup Methods
 app.get("/signup", signupController.get_signup);
+app.get("/image2", signupController.get_image);
 app.post("/signup", signupController.post_signup);
 
 // Handling Login Methods
 app.get("/login", loginController.get_login);
-app.post("/login", loginController.post_login);
+app.get("/image3", loginController.get_image);
 app.get("/logout", loginController.do_logout);
+app.post("/login", loginController.post_login);
 
 // CRUD Operations with Todo list
 app.post("/todos", todoController.create_todo);

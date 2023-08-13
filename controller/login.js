@@ -8,6 +8,11 @@ exports.get_login = (req, res, next) => {
   res.sendFile(filePath);
 };
 
+exports.get_image = (req, res, next)=> {
+  const filePath = path.join(__dirname, "../static/d.jpg");
+  res.sendFile(filePath);
+}
+
 exports.do_logout = (req, res) => {
   res.clearCookie("jwt");
   res.redirect("/login");
