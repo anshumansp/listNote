@@ -6,7 +6,7 @@ function removeIt(button) {
   // Removing the todo from  Database
   const removeFromDatabase = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/todos/${id}`, {
+      const response = await fetch(`/todos/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ function editIt(button) {
             description: newValue,
           };
 
-          const response = await fetch(`http://localhost:5000/todos/${id}`, {
+          const response = await fetch(`/todos/${id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -123,7 +123,7 @@ async function addIt() {
         description: userInput,
       };
 
-      await fetch("http://localhost:5000/todos", {
+      await fetch("/todos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -214,7 +214,7 @@ getButton.addEventListener("click", addIt);
 // Adding all Todos on Window loading
 async function fetchAndDisplayTodos() {
   try {
-    const response = await fetch("http://localhost:5000/todos/");
+    const response = await fetch("/todos/");
     const todos = await response.json();
     const list = document.querySelector(".list-group");
     const todoArray = todos.yourTodos;

@@ -145,7 +145,7 @@
                 title: title,
                 description: description
             }
-            await fetch("http://localhost:5000/note/",{
+            await fetch("/note/",{
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
@@ -233,7 +233,7 @@
                     editModal.hide();
 
                     // Updating the Description in Database
-                    await fetch(`http://localhost:5000/note/${id}`, {
+                    await fetch(`/note/${id}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
@@ -250,7 +250,7 @@
             const id = noteId;
             const noteElement = document.getElementById(id);
             noteElement.remove();
-            await fetch(`http://localhost:5000/note/${id}`, {
+            await fetch(`/note/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -263,7 +263,7 @@
 
         async function fetchAndDisplayNotes() {
             try {
-                let response = await fetch("http://localhost:5000/note/");
+                let response = await fetch("/note");
                 let notes = await response.json();
                 let myNotes = notes.yourNotes;
                 if(myNotes.length === 0) {
