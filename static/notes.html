@@ -46,24 +46,36 @@
         }
 
         .logout-btn {
-            color: white;
-            font-size: 14px;
-            padding: 10px;
-            margin: auto;
-            border-radius: 5px;
-            text-decoration: none;
-        }
+        color: white;
+        font-size: 14px;
+        padding: 10px;
+        margin: auto;
+        border-radius: 5px;
+        text-decoration: none;
+        background-color: rgb(37, 34, 34);
+      }
+
+      #logout-btn:hover{
+        background-color: white;
+        color: black;
+        opacity: 75%;
+      }
+
+        body {
+        background: url("/image") center/cover no-repeat;
+        height: 100vh;
+      }
     </style>
 </head>
 
-<body class="bg-dark">
+<body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
             <div class="container-fluid">
                 <div class="navbar-text my-0 ps-2 fs-4">
                     <span class="me-2">List-Max</span>
                     <ul class="nav-items">
-                        <a href="/dashboard">
+                        <a href="/home">
                             <li class="items">Home</li>
                         </a>
                         <a href="/dashboard">
@@ -74,7 +86,7 @@
                         </a>
                     </ul>
                 </div>
-                <a href="/logout" class="logout-btn bg-dark">Log Out</a>
+                <a href="/logout" id="logout-btn" class="logout-btn bg-dark">Log Out</a>
             </div>
         </nav>
     </header>
@@ -150,7 +162,7 @@
         async function addNote(note) {
                 const { id, description, title } = note;
                 const newNote = document.createElement("div");
-                newNote.className = "note-container bg-secondary d-flex justify-content-between align-items-center border border-dark rounded p-3 mb-3";
+            newNote.className = "note-container bg-dark bg-opacity-75 d-flex justify-content-between align-items-center border border-white rounded p-3 mb-3";
                 newNote.setAttribute("id", id);
 
                 const noteContent = document.createElement("div");
@@ -164,9 +176,9 @@
                 var removeBtn = document.createElement("button");
                 editBtn.textContent = "Edit";
                 removeBtn.textContent = "Remove";
-                editBtn.className = "btn btn-outline-dark btn-sm me-2";
+            editBtn.className = "btn btn-outline-light btn-sm me-2";
                 editBtn.setAttribute("id", "editBtn");
-                removeBtn.className = "btn btn-sm btn-outline-dark";
+            removeBtn.className = "btn btn-sm btn-outline-light";
                 removeBtn.setAttribute("id", "removeBtn");
 
                 // Append buttons to the button container

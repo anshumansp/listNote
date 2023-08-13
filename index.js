@@ -21,6 +21,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Rendering our Dashboard
+app.get("/home", authorization, (req, res) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, max-age=0"
+  );
+  res.sendFile(__dirname + "/static/home.html");
+});
+
+app.get("/image", authorization, (req, res) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, max-age=0"
+  );
+  res.sendFile(__dirname + "/static/a.jpg");
+});
+
 app.get("/dashboard", authorization, (req, res, next) => {
   res.setHeader(
     "Cache-Control",

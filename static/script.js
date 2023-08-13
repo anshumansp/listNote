@@ -226,15 +226,16 @@ async function fetchAndDisplayTodos() {
       const listItem = document.createElement("li");
       listItem.textContent = listMessage;
       listItem.setAttribute("id", `${listId}`);
-      listItem.className = "list-group-item pt-2 pb-2 mt-0 fs-5";
+      listItem.className =
+        "list-group-item bg-dark bg-opacity-50 text-white pt-2 pb-2 mt-0 fs-5";
 
       // Add remove and edit buttons
       const editBtn = document.createElement("button");
       const removeBtn = document.createElement("button");
       editBtn.textContent = "Edit";
       removeBtn.textContent = "Remove";
-      editBtn.className = "btn btn-outline-dark btn-sm float-end me-2";
-      removeBtn.className = "btn btn-sm btn-outline-dark float-end";
+      editBtn.className = "btn btn-outline-light btn-sm float-end me-2";
+      removeBtn.className = "btn btn-sm btn-outline-light float-end";
       listItem.appendChild(removeBtn);
       listItem.appendChild(editBtn);
 

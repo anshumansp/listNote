@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        .navbar-text {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-items .items {
+            font-size: 20px;
+            margin: 0px 16px;
+            padding: 0;
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .nav-items .items:hover {
+            color: black;
+        }
+
+        .logout-btn {
+            color: white;
+            font-size: 14px;
+            padding: 10px;
+            margin: auto;
+            border-radius: 5px;
+            text-decoration: none;
+            background-color: rgb(37, 34, 34);
+        }
+
+        #logout-btn:hover {
+            background-color: white;
+            color: black;
+            opacity: 75%;
+        }
+
+        body {
+            background: url("/image") center/cover no-repeat;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+            <div class="container-fluid">
+                <div class="navbar-text my-0 ps-2 fs-4">
+                    <span class="me-2">List-Max</span>
+                    <ul class="nav-items">
+                        <a href="/home">
+                            <li class="items">Home</li>
+                        </a>
+                        <a href="/dashboard">
+                            <li class="items">Lists</li>
+                        </a>
+                        <a href="/notes">
+                            <li class="items">Notes</li>
+                        </a>
+                    </ul>
+                </div>
+                <a href="/logout" id="logout-btn" class="logout-btn bg-dark">Log Out</a>
+            </div>
+        </nav>
+    </header>
+
+</body>
+
+</html>
