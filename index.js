@@ -21,6 +21,7 @@ app.use("/static", express.static("static", { extensions: ["js"] }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get("/", loginController.get_login);
 // Rendering our Home
 app.get("/home", authorization, homeController.get_homepage);
 app.get("/image", homeController.get_image);
