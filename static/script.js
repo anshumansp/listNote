@@ -51,7 +51,7 @@ function editIt(button) {
   // Create a new save button
   var saveBtn = document.createElement("button");
   saveBtn.textContent = "Save";
-  saveBtn.className = "btn btn-outline-dark btn-sm float-end me-2 mt-2";
+  saveBtn.className = "btn btn-outline-light btn-sm float-end me-2 mt-2";
 
   // Add the input and save button to the li tag
   liTag.appendChild(input);
@@ -62,8 +62,8 @@ function editIt(button) {
   var removeBtn = document.createElement("button");
   editBtn.textContent = "Edit";
   removeBtn.textContent = "Remove";
-  editBtn.className = "btn btn-outline-dark btn-sm float-end me-2";
-  removeBtn.className = "btn btn-sm btn-outline-dark float-end";
+  editBtn.className = "btn btn-outline-light btn-sm float-end me-2";
+  removeBtn.className = "btn btn-sm btn-outline-light float-end";
 
   // Event listener for the save button
   saveBtn.addEventListener("click", function () {
