@@ -21,10 +21,11 @@ app.use("/static", express.static("static", { extensions: ["js"] }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get("/", loginController.get_login);
 // Rendering our Home
+app.get("/", loginController.get_login);
 app.get("/home", authorization, homeController.get_homepage);
 app.get("/image", homeController.get_image);
+app.get("/fav", homeController.get_favicon)
 
 // Rendering todo page
 app.get("/dashboard", authorization, todoController.get_todo_homepage);

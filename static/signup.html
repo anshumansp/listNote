@@ -8,6 +8,7 @@
     <title>To Do List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="/fav">
     <style>
         .custom-box {
             width: 40vw;
@@ -84,7 +85,25 @@
             </div>
         </form>
     </div>
+    <div id="alertContainer" class="position-fixed top-0 end-0 p-2">
+        <!-- This div will hold the alert messages -->
+    </div>
     <script>
+
+    function showAlert(message) {
+        const alertContainer = document.getElementById("alertContainer");
+        const alertDiv = document.createElement("div");
+        alertDiv.classList.add("alert", "alert-dark", "alert-dismissible", "fade", "show");
+        alertDiv.style.fontSize = "16px";
+        alertDiv.style.padding = "1rem 1rem";
+        alertDiv.innerHTML = `Error : ${message}`;
+        alertContainer.appendChild(alertDiv);
+
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 5000);
+    }
+
         document.addEventListener("DOMContentLoaded", () => {
             const form = document.querySelector("form");
             form.addEventListener("submit", async (event) => {
@@ -107,10 +126,13 @@
                     if (response.status === 201) {
                         window.location.href = "/home";
                     } else {
-                        console.error("Signup failed:", response.message);
+                        const responseData = await response.json();
+                        console.error("Signup Failed:", responseData.message);
+                        showAlert(responseData.message);
                     }
                 } catch (error) {
                     console.error("Error: ", error);
+                    showAlert.error(error)
                 }
             });
         });

@@ -28,7 +28,7 @@ exports.post_login = async (req, res, next) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "This user does not exist",
+        message: "Invalid Credentials",
       });
     }
 
@@ -36,7 +36,7 @@ exports.post_login = async (req, res, next) => {
     bcrypt.compare(password, userPass, (err, success) => {
       if (err || !success) {
         return res.status(401).json({
-          message: "Authentication Failed",
+          message: "Invalid Credentials",
         });
       }
 

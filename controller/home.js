@@ -15,3 +15,12 @@ exports.get_image = (req, res) => {
   );
   res.sendFile(path.join(__dirname, "../static/a.jpg"));
 };
+
+
+exports.get_favicon = (req, res) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, max-age=0"
+  );
+  res.sendFile(path.join(__dirname, "../static/1.ico"));
+};
