@@ -6,6 +6,10 @@ const pool = new Client({
   connectionString: connectionString,
 });
 
+pool.on("error", (error) => {
+  console.error("Database connection error:", error);
+});
+
 pool.connect()
   .then(() => {
     console.log('Connected to the database');
